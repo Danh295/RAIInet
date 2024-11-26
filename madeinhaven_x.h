@@ -8,7 +8,7 @@ class MadeInHaven : public Ability {
 public:
     MadeInHaven();
     int getId(){return id;}
-    char effect() override;
+    bool effect() override;
 };
 
 #endif
