@@ -6,9 +6,9 @@ class LinkBoost : public Ability {
     int id;
 
 public:
-    LinkBoost(int id);
+    LinkBoost();
     int getId(){return id;}
-    char effect() override;
+    int effect() override;
 };
 
 #endif
