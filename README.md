@@ -15,5 +15,13 @@ Additionally, when a player’s link loses to an opponent’s link in battle, th
 These mechanics are explained in greater detail below.
 As which links are viruses and which links are data is hidden information, you can keep your opponent guessing as to what your game plan is!
 
+The ability class is the key component of RAIInet. since it affect all other core components. the effect of an ability can trigger all the way from the board -> game -> link -> player 
 
-The base logic is that anything affecting the player or board directly should be handle by the game class. the game also triggers all changes to the link class. for ex if a new ability is applied to the link and when it is applied. 
+The game is the orchestrator of RAIInet.
+The base logic is that anything affecting the player or board directly should be handle by the game class.the game is reponsible for dispatching abilities across player, board and links. the game also triggers all changes to the link class. for ex if a new ability is applied to the link and when it is applied. 
+
+The board handles all movement on the board, link does not need to know where it is as long as the board knows. The board is also responsible for knowing where each ability is on the board (for abiliteis affecting squares) and report it to the game for processing.
+
+the link is pretty standard and is responsible for his own attributes.
+
+the player is responsible for his own attributes.
