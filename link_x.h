@@ -2,6 +2,8 @@
 #define LINK_H
 #include "ability_x.h"
 
+class Ability;
+
 class Link{
     char name;
     bool visible;
