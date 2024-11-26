@@ -6,9 +6,9 @@ class Firewall : public Ability {
     const int id = 2;
 
 public:
-    Firewall(int id);
-    int getId();
-    char effect() override;
+    Firewall();
+    int getId(){return id;}
+    bool effect() override;
 };
 
 #endif
