@@ -1,6 +1,9 @@
+#include "movedecorator.h"
+#include "board.h"
+#include <iostream>
+using namespace std;
 
-
-MovingBoard::MovingBoard(Board *base, Player p, Link link, char direction, std::unordered_map<char, std::pair<int, int>> linkPositions)
+MovingBoard::MovingBoard(Board *base, Link link, char direction, std::unordered_map<char, std::pair<int, int>> linkPositions)
         : Decorator{base}, link_name{link_name}, direction{direction} {
 
             linkPositions = base.linkPositions;
@@ -11,7 +14,7 @@ MovingBoard::MovingBoard(Board *base, Player p, Link link, char direction, std::
 
             if(link.ability.getId() == 1){
                 //this is link boost
-                move = 2;
+                move = link.ability.effect();
             }
             from_x, from_y = dx, dy;
 
@@ -19,17 +22,20 @@ MovingBoard::MovingBoard(Board *base, Player p, Link link, char direction, std::
 
             if(link.ability.getId() == 7){
                 //king crimson
-                link.ability.effect(from_x, from_y, linkPositions);
-                return;
+                pair<int, int> pair1 = link.ability.effect();
+                dx = pair1.first;
+                dy = pair1.second;
+            }
+            else if(direction != ''){
+                switch (direction) {
+                    case 'u': dx+=move; break;
+                    case 'd': dx-=move; break;
+                    case 'l': dy-=move; break;
+                    case 'r': dy+=move; break;
+                }
             }
 
-
-            switch (direction) {
-                case 'u': dx+=move; break;
-                case 'd': dx-=move; break;
-                case 'l': dy-=move; break;
-                case 'r': dy+=move; break;
-            }
+            
             linkPositions[link.name]={dx, dy};
 
             if(abilityAt(dx,dy) !=0){
