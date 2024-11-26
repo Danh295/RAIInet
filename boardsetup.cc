@@ -25,7 +25,7 @@ BoardSetup::BoardSetup(int number_of_players)
                     "T........t",
                     "U........u",
                     "SV......vS",
-                    "SW......wS",
+                    "SQ......qS",
                     "X........x",
                     "Y........y",
                     "Z...DE...z",
@@ -43,7 +43,11 @@ BoardSetup::BoardSetup(int number_of_players)
 
 }
 
-char BoardSetup::infoAt(int row, int col) {
+char BoardSetup::linkAt(int row, int col) {
+    return cur_board[row][col];
+}
+
+char BoardSetup::displayAt(int row, int col) {
     return cur_board[row][col];
 }
 
