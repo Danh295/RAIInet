@@ -8,7 +8,7 @@ class Download : public Ability {
 public:
     Download();
     int getId(){return id;}
-    void effect() override;
+    bool effect() override;
 };
 
 #endif
