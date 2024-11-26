@@ -4,6 +4,7 @@
 
 Link::Link(char name, int strength, bool virus): name{name}, strength{strength}, virus{virus} {
     a = new Ability();
+    visible = false;
 }
 
 Link::~Link(){
@@ -13,7 +14,9 @@ Link::~Link(){
 void Link::shambles(){//setter
     virus = !virus;
 }
-
+void Link::enlighten(){//setter
+    visible = true;
+}
 bool Link::isVirus(){//getter
     return virus;
 }

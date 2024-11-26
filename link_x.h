@@ -14,6 +14,7 @@ public:
     char getName(){return name;}   //getter 
     void shambles();//setter
     bool isVirus();//getter
+    void enlighten();//setter
     int getStrength();//getter
     Ability getAbility();
     void setAbility(Ability *b);
