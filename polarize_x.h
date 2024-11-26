@@ -7,8 +7,8 @@ class Polarize : public Ability {
 
 public:
     Polarize();
-    char getId(){return id;}    
-    char effect() override;
+    int getId(){return id;}    
+    void effect() override;
 };
 
 #endif
