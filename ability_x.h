@@ -5,7 +5,7 @@
 class Ability {
     public:
         virtual ~Ability();
-        virtual Effect(int row, int col);
+        virtual effect();
 };
 
 #endif
