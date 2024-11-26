@@ -1,4 +1,3 @@
-// movingbox.h
 #ifndef MOVEDECORATOR_H
 #define MOVEDECORATOR_H
 #include "decorator.h"
