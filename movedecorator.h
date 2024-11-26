@@ -10,7 +10,9 @@ class MoveDecorator : public Decorator {
     Link link; 
     char direction;
     unordered_map<char,pair<int, int>> linkPositions;
-
+    int from_x, from_y;
+    bool ability_triggered = false;
+    
     public:
         MoveDecorator(Board *base, Link link, char direction, unordered_map<char, pair<int, int>> linkPositions);
         char linkAt(int row, int col) override;

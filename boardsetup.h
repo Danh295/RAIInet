@@ -12,6 +12,7 @@ class BoardSetup: public Board {
 
         char linkAt(int row, int col) override;
         int abilityAt(int row, int col) override;
+        char displayAt(int row, int col) override;
 };
 
 #endif

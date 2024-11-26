@@ -1,52 +1,44 @@
-#include "boardsetup.h"
+#include "abilitydecorator.h"
 #include "board.h"
 #include <iostream>
 using namespace std;
 
-BoardSetup::BoardSetup(int number_of_players, unordered_map<char, pair<int, int>> linkPositions)
-        :{
-            if(number_of_players == 2){
-                cur_board = {
-                    "abcSSfgh",
-                    "...de...",
-                    "........",
-                    "........",
-                    "........",
-                    "........",
-                    "...DE...",
-                    "ABCSSFGH"
-                };
+AbilityDecorator::AbilityDecorator(Board *previous, int x, int y, Ability ability, std::unordered_map<char, std::pair<int, int>> linkPositions)
+        : Decorator{previous}, x{x}, y{y}, ability{ability}{
+            linkPositions = previous.linkPositions;
 
-            }
-            elif(number_of_players == 4){
-                cur_board = {
-                     "abcSSfgh",
-                    "R...de...r",
-                    "T........t",
-                    "U........u",
-                    "V........v",
-                    "W........w",
-                    "X........x",
-                    "Y........y",
-                    "Z...DE...z",
-                     "ABCSSFGH"
-                };
-            }
+        }
 
-            for(int i= 0; i<size(cur_board); i++){
-                for(int j = 0; j<size(cur_board[0]);j++){
-                    if(cur_board[i][j]!="." and cur_board[i][j]!="S"){
-                        linkPositions[cur_board[i][j]] = {i,j};
-                    }
-                }
-            }
-
+char AbilityDecorator::linkAt(int row, int col){
+    return base->linkAt(row, col);//this points to the previous version on the board
 }
 
-char BoardSetup::infoAt(int row, int col) {
-    return cur_board[row][col];
+int AbilityDecorator::abilityAt(int row, int col){
+    
+
+    if(isSquareAbility(ability_id) and base->abilityAt(row, col)==0 and linkAt(row,col)=='.'){
+        return ability_id;
+    }
+    return base->abilityAt(row, col);// this should return the most recent ability on this square should be 
 }
 
-int BoardSetup::abilityAt(int row, int col) {
-    return 0; //represent blank ability
+char AbilityDecorator::displayAt(int row, int col){
+    //if the square is empty and there is an ability on it display the ability. 
+    //otherwise display the link
+
+    if(abilityAt(row,col) !=0){ //if the ability id is not zero it is guaranteed to be a square ability at this point
+        return ability.display();
+    }
+    
+    return linkAt(row,col);
+}
+
+bool isSquareAbility(int ability_id){
+    for(auto id: squareAbility){
+        if(ability_id == id){
+            return true;
+        }
+    }
+
+    return false;
 }
