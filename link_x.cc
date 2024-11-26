@@ -30,7 +30,7 @@ Ability* Link::getAbility(){
 }
 void Link::setAbility(Ability *b){
     delete a;
-    a = b;
+    a = std::move(b);
 }
 
 
