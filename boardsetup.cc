@@ -21,12 +21,12 @@ BoardSetup::BoardSetup(int number_of_players)
             elif(number_of_players == 4){
                 cur_board = {
                      "abcSSfgh",
-                    "R...de...r",
+                    "Q...de...q",
+                    "R........r",
                     "T........t",
-                    "U........u",
+                    "SU......uS",
                     "SV......vS",
-                    "SQ......qS",
-                    "X........x",
+                    "x........x",
                     "Y........y",
                     "Z...DE...z",
                      "ABCSSFGH"
