@@ -9,26 +9,43 @@ class Player;
 class Game: public Subject {
     Board *theboard;
     int turn;
-    vector<*Player> players;
-
+    int number_of_players;
+    vector<*Player> players = {nullptr};
+    //in order to avoid confusion between links and abilities on the board
+    //made a pair so we can add more abilities that affect square if needed
+    Pair<int, char> allAbilities = {
+        {0, 'm'},
+        {1, 'w'},
+        {2, '3'},
+        {3, '€'}
+    }
+    const vector<int> longTermLinkAbilitiesId = {1,8};//abilities that stick to the link t
+    const vector<int> shortTermLinkAbilitiesId = {7};
+    const vector<int> attackAbilitiesId = {3,4,5};
+    const vector<int> squareAbilitiesId = {2};
+    const vecort<int> gameAbilitesId = {6};
     public:
-        enum {Blank=0, LinkBoost, Firewall, Download, Polarize, Scan, Z, KingCrimson, MadeInHaven}; // Available abilities.
-        explicit Studio(Board *theboard ): theboard{theboard} {}
-        //this is just to make it easier 
-        enum class abilities {Blank=0, LinkBoost, Firewall, Download, Polarize, Scan, Z, KingCrimson, MadeInHaven}; // Available abilities.
-        explicit Studio(Board *theboard,  vector<*Player> input): theboard{theboard} {
-            i=0
+
+        explicit Game(Board *theboard,  vector<*Player> input): theboard{theboard}, number_of_players{size(input)} {
             for(auto p: input){
-                players[i] = std::move(p);
-                i+=1;
+                players.emplace_back(std::move(p));
+            }
+        }
+        ~Game(){
+            delete theboard;
+            for(auto p: players){
+                delete p;
             }
         }
 
         Board*& board() { return theboard; }
         void setupPlayer(int turn, vector<*Ability> abilities, vector<*Link> links);
-        bool isValidSetup();//checks if everything is fine before beginnig turns in the game, if not throws something
-        void ability_to_square(int turn,  int x, int y, int ability_id);
-        void ability_to_link(int turn,char link_name, int ability_id);
+        bool isValidSetup();//add to setupPlayer
+        void opponentAbilityOnSquare(int turn, int row, int col);
+        void removeLinkOnBoard(char link_name);
+        void playerAbilityToOpponentLink(int turn,char link_name, Ability ability);
+        void playerAbilityToPlayerLink(int turn, char link_name, Ability ability);
+        int findWinner();
         void render();
         void animate(int turns);
         void animate(int turn);
