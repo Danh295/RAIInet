@@ -2,6 +2,6 @@
 #include "ability_x.h"
 
 
-void Scan::effect(Link& link){
-    link.enlighten();
+void Scan::effect(Link* link){
+    link->enlighten();
 }

@@ -2,10 +2,12 @@
 #include "ability_x.h"
 
 
-bool madeInHaven::effect(int ability_id){
-    if(ability_id == 3){// made in haven can only be stopped if taken off the board
-        return false;
+bool MadeInHaven::effect(int ability_id){
+    //all link based abilities are ineffective on this link, except for download
+    // made in haven can only be stopped if taken off the board
+    if(ability_id == 3){//if the ability is a download
+        return true;
     }
-    return true;
+    return false;
 }
 
