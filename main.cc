@@ -1,43 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <memory>
+#include "player_x.h"
+#include "board_x.h"
 
+using namespace std;
 
+// TODO: 1. determine how to track which player's turn it is
+// TODO: 2. handle player commands specific to current player turn
+// TODO: 3. handle win/loss conditions
 
 int main () {
 
+    // INITIALIZATION ----------------------------------------------------------------
+
+    // Player init
     vector <Player*> players;
 
-    int number_of_players;
-    cin>> number_of_players;
+    int numPlayers;
+    cin >> numPlayers;
 
-    Board* board= new BoardSetup{number_of_players}; // 2 is the default num of player
+    // Board init
+    unique_ptr<Board> board = make_unique<Board>(numPlayers);
+    // Board* board = new BoardSetup{numPlayers}; 
 
-    Game game{board}
+    // Game init
+    Game game{board.get()}; // assumes Game ctor takes raw ptr
+    // Game game {board};
 
-    for(int id =1; id<= number_of_players;id++){
-        game.addPlayers(id);
-    }
+    // Player setup
+    // ! IF PLAYERS DON'T EXIST, THEN POINTER BECOMES NULL AND CAN LEAD TO ISSUES FOR >2 PLAYERS (mitigate for now by js commenting it out)
     
-    std::string command;
+    for(int id = 1; id <= number_of_players; id++){
+        game.addPlayers(id); // assumes addPlayers(id) takes int and creates a Player object with it
+        players.push_back(game.getPlayer(id)); // assumes getPlayer(id) returns raw ptr to Player object with given id
+    }
 
     Player* p1= game->getPlayer(1);
     Player* p2= game->getPlayer(2);
-    Player* p3= game->getPlayer(3);
-    Player* p4= game->getPlayer(4);
+    // Player* p3= game->getPlayer(3);
+    // Player* p4= game->getPlayer(4);
     
-    const vector<int> longTermLinkAbilitiesId = {'L','M'};//abilities that stick to the link
-    const vector<int> attackAbilitiesId = {'D','S','P'};
+    // Ability IDs init
+    const vector<int> longTermLinkAbilitiesId = {'L','M'}; // abilities with lasting status effect on the link (sticks to it)
+    const vector<int> attackAbilitiesId = {'D','S','P'}; // abilities used for attacking
 
-    while (std::cin >> command) {
+    // GAME LOOP ------------------------------------------------------------------------
+    int turn = 0;
+    string command;
+    while (cin >> command){ // Player input command
+        cerr << "Curreent turn: " << turn << endl;
 
-        if(command == "-ability1"){
+        // SETUP COMMANDS --------------------------------
 
-            std::string abilities;
-            cin>> abilities;
+        // Specifies abilities for player 1
+            // Default: "LFDSP"
+        if(command == "-ability1") {
+            string abilities;
+            cin >> abilities;
 
-            if(abilities==""){
-                p1->setDefaultAbilities();
-            }
-            else{
-                for(int i=0; i<size(abilities); i++){
+            if(abilities ==""){ 
+                p1->setDefaultAbilities(); 
+            }else{
+                for(int i = 0; i < size(abilities); i++){
                     if(abilities[i] == 'L'){
                         p1->setAbility(i, new Linkboost());
                     }
@@ -62,20 +88,19 @@ int main () {
                     else if(abilities[i] == 'M'){
                         p1->setAbility(i, new MadeInHaven());
                     }
-
                 }
             }
-        }
-        else if (command == "-ability2"){
-            
-            std::string abilities;
-            cin>> abilities;
+        
+        // Specifies abilities for player 2
+            // Default: "LFDSP"
+        } else if (command == "-ability2"){
+            string abilities;
+            cin >> abilities;
 
-            if(abilities==""){
+            if(abilities == ""){
                 p2->setDefaultAbilities();
-            }
-            else{
-                for(int i=0; i<size(abilities); i++){
+            }else{
+                for(int i = 0; i < size(abilities); i++){
                     if(abilities[i] == 'L'){
                         p2->setAbility(i, new Linkboost());
                     }
@@ -100,223 +125,329 @@ int main () {
                     else if(abilities[i] == 'M'){
                         p2->setAbility(i, new MadeInHaven());
                     }
-
                 }
             }
-        }
-        else if (command == "-ability3"){
+
+        // // Specifies abilities for player 3
+        // // NOTE: not necessary at the moment (not implemented yet)
+        // // }else if (command == "-ability3"){
             
-            std::string abilities;
-            cin>> abilities;
+        //     std::string abilities;
+        //     cin >> abilities;
 
-            if(abilities==""){
-                p3->setDefaultAbilities();
-            }
-            else{
-                for(int i=0; i<size(abilities); i++){
-                    if(abilities[i] == 'L'){
-                        p3->setAbility(i, new Linkboost());
-                    }
-                    else if(abilities[i] == 'F'){
-                        p3->setAbility(i, new Firewall());
-                    }
-                    else if(abilities[i] == 'D'){
-                        p3->setAbility(i, new Download());
-                    }
-                    else if(abilities[i] == 'S'){
-                        p3->setAbility(i, new Scan());
-                    }
-                    else if(abilities[i] == 'P'){
-                        p3->setAbility(i, new Polarize());
-                    }
-                    else if(abilities[i] == 'Z'){
-                        p3->setAbility(i, new Z());
-                    }
-                    else if(abilities[i] == 'K'){
-                        p3->setAbility(i, new KingCrimson());
-                    }
-                    else if(abilities[i] == 'M'){
-                        p3->setAbility(i, new MadeInHaven());
-                    }
+        //     if(abilities == ""){
+        //         p3->setDefaultAbilities();
+        //     }else{
+        //         for(int i = 0; i < size(abilities); i++){
+        //             if(abilities[i] == 'L'){
+        //                 p3->setAbility(i, new Linkboost());
+        //             }
+        //             else if(abilities[i] == 'F'){
+        //                 p3->setAbility(i, new Firewall());
+        //             }
+        //             else if(abilities[i] == 'D'){
+        //                 p3->setAbility(i, new Download());
+        //             }
+        //             else if(abilities[i] == 'S'){
+        //                 p3->setAbility(i, new Scan());
+        //             }
+        //             else if(abilities[i] == 'P'){
+        //                 p3->setAbility(i, new Polarize());
+        //             }
+        //             else if(abilities[i] == 'Z'){
+        //                 p3->setAbility(i, new Z());
+        //             }
+        //             else if(abilities[i] == 'K'){
+        //                 p3->setAbility(i, new KingCrimson());
+        //             }
+        //             else if(abilities[i] == 'M'){
+        //                 p3->setAbility(i, new MadeInHaven());
+        //             }
+        //         }
+        //     }
 
-                }
-            }
-        }
-        else if (command == "-ability4"){
+        // // Specifies abilities for player 3
+        // // NOTE: not necessary at the moment (not implemented yet)
+        // }else if (command == "-ability4"){
             
-            std::string abilities;
-            cin>> abilities;
+        //     std::string abilities;
+        //     cin >> abilities;
 
-            if(abilities==""){
-                p4->setDefaultAbilities();
-            }
-            else{
-                for(int i=0; i<size(abilities); i++){
-                    if(abilities[i] == 'L'){
-                        p4->setAbility(i, new Linkboost());
-                    }
-                    else if(abilities[i] == 'F'){
-                        p4->setAbility(i, new Firewall());
-                    }
-                    else if(abilities[i] == 'D'){
-                        p4->setAbility(i, new Download());
-                    }
-                    else if(abilities[i] == 'S'){
-                        p4->setAbility(i, new Scan());
-                    }
-                    else if(abilities[i] == 'P'){
-                        p4->setAbility(i, new Polarize());
-                    }
-                    else if(abilities[i] == 'Z'){
-                        p4->setAbility(i, new Z());
-                    }
-                    else if(abilities[i] == 'K'){
-                        p4->setAbility(i, new KingCrimson());
-                    }
-                    else if(abilities[i] == 'M'){
-                        p4->setAbility(i, new MadeInHaven());
-                    }
+        //     if(abilities == ""){
+        //         p4->setDefaultAbilities();
+        //     }else{
+        //         for(int i = 0; i < size(abilities); i++){
+        //             if(abilities[i] == 'L'){
+        //                 p4->setAbility(i, new Linkboost());
+        //             }
+        //             else if(abilities[i] == 'F'){
+        //                 p4->setAbility(i, new Firewall());
+        //             }
+        //             else if(abilities[i] == 'D'){
+        //                 p4->setAbility(i, new Download());
+        //             }
+        //             else if(abilities[i] == 'S'){
+        //                 p4->setAbility(i, new Scan());
+        //             }
+        //             else if(abilities[i] == 'P'){
+        //                 p4->setAbility(i, new Polarize());
+        //             }
+        //             else if(abilities[i] == 'Z'){
+        //                 p4->setAbility(i, new Z());
+        //             }
+        //             else if(abilities[i] == 'K'){
+        //                 p4->setAbility(i, new KingCrimson());
+        //             }
+        //             else if(abilities[i] == 'M'){
+        //                 p4->setAbility(i, new MadeInHaven());
+        //             }
+        //         }
+        //     }
 
+        // Specifies link tokens for player 1
+        }else if (command == "-link1"){
+
+            // TODO: remove redundant code duplication by checking for "-link" and 
+            // then updating it for the specified player accordingly afterwards
+
+            // Get input file for link tokens
+            string fileName;
+            if (cin >> fileName) {
+                ifstream file(fileName);
+
+                // TODO: use try catch for error handling???
+                if (!file.is_open()) {
+                    cerr << "Error: Could not open file: " << fileName << endl;
+                    return 1;
                 }
-            }
-        }
-        else if (command == "-link1"){
+
+                // Assign link tokens to player 1 
+                vector<string> linkTokens;
+                string token;
+                int i = 0;
+
+                while (i < 8 && file >> token) {
+                    linkToken.emplace_back(token);
+
+                    bool virus = (token[0] != 'D');
+                    int strength = token[1] - '0'; // convert char to int using ascii
+                    p1->setLink(i, strength, virus);
+
+                    i++;
+                }
+
+                if (linkTokens.empty()){
+                    p1->setRandomLinks();
+                    cerr << "Error: No tokens found in file. Random values initialized." << endl;
+                }
+
+            } else {
+                cerr << "Error: Missing file name for link tokens" << endl;
+                return 1;
+            } 
+
+        // Specifies link tokens for player 2
+        }else if(command == "-link2"){
             
-            vector<string> links;
+            // Get input file for link tokens
+            string fileName;
+            if (cin >> fileName) {
+                ifstream file(fileName);
 
-            while(i<8 && cin>>links[i]){
-                bool virus = true;
-                int strength = link[i][1];
-                if(links[i][0] == "D"){
-                    virus = false;
+                // TODO: use try catch for error handling???
+                if (!file.is_open()) {
+                    cerr << "Error: Could not open file: " << fileName << endl;
+                    return 1;
                 }
-                p1->setLink(i, strength, virus);
-                i++;
-            }
-            if(size(links)==0){
-                p1->setRandomLinks();
-            }
 
-        }
-        else if (command == "-link2"){
+                // Assign link tokens to player 1 
+                vector<string> linkTokens;
+                string token;
+                int i = 0;
+
+                while (i < 8 && file >> token) {
+                    linkToken.emplace_back(token);
+
+                    bool virus = (token[0] != 'D');
+                    int strength = token[1] - '0'; // convert char to int using ascii
+                    p2->setLink(i, strength, virus);
+
+                    i++;
+                }
+
+                if (linkTokens.empty()){
+                    p2->setRandomLinks();
+                    cerr << "Error: No tokens found in file. Random values initialized." << endl;
+                }
+
+            } else {
+                cerr << "Error: Missing file name for link tokens" << endl;
+                return 1;
+            } 
+
+        // // Specifies link tokens for player 3
+        // } else if (command == "-link3"){
             
-            vector<string> links;
+        //     // Get input file for link tokens
+        //     string fileName;
+        //     if (cin >> fileName) {
+        //         ifstream file(fileName);
 
-            while(i<8 && cin>>links[i]){
-                bool virus = true;
-                int strength = link[i][1];
-                if(links[i][0] == "D"){
-                    virus = false;
-                }
-                p2->setLink(i, strength, virus);
-                i++;
-            }
-            if(size(links)==0){
-                p2->setRandomLinks();
-            }
+        //         // TODO: use try catch for error handling???
+        //         if (!file.is_open()) {
+        //             cerr << "Error: Could not open file: " << fileName << endl;
+        //             return 1;
+        //         }
 
-        }
-        else if (command == "-link3"){
+        //         // Assign link tokens to player 1 
+        //         vector<string> linkTokens;
+        //         string token;
+        //         int i = 0;
+
+        //         while (i < 8 && file >> token) {
+        //             linkToken.emplace_back(token);
+
+        //             bool virus = (token[0] != 'D');
+        //             int strength = token[1] - '0'; // convert char to int using ascii
+        //             p3->setLink(i, strength, virus);
+
+        //             i++;
+        //         }
+
+        //         if (linkTokens.empty()){
+        //             p3->setRandomLinks();
+        //             cerr << "Error: No tokens found in file. Random values initialized." << endl;
+        //         }
+
+        //     } else {
+        //         cerr << "Error: Missing file name for link tokens" << endl;
+        //         return 1;
+        //     } 
+
+        // // Specifies link tokens for player 4
+        // }else if (command == "-link4"){
             
-            vector<string> links;
+        //     // Get input file for link tokens
+        //     string fileName;
+        //     if (cin >> fileName) {
+        //         ifstream file(fileName);
 
-            while(i<8 && cin>>links[i]){
-                bool virus = true;
-                int strength = link[i][1];
-                if(links[i][0] == "D"){
-                    virus = false;
-                }
-                p3->setLink(i, strength, virus);
-                i++;
-            }
-            if(size(links)==0){
-                p3->setRandomLinks();
-            }
+        //         // TODO: use try catch for error handling???
+        //         if (!file.is_open()) {
+        //             cerr << "Error: Could not open file: " << fileName << endl;
+        //             return 1;
+        //         }
 
-        }
-        else if (command == "-link4"){
-            
-            vector<string> links;
+        //         // Assign link tokens to player 1 
+        //         vector<string> linkTokens;
+        //         string token;
+        //         int i = 0;
 
-            while(i<8 && cin>>links[i]){
-                bool virus = true;
-                int strength = link[i][1];
-                if(links[i][0] == "D"){
-                    virus = false;
-                }
-                p4->setLink(i, strength, virus);
-                i++;
-            }
-            if(size(links)==0){
-                p4->setRandomLinks();
-            }
+        //         while (i < 8 && file >> token) {
+        //             linkToken.emplace_back(token);
 
-        }
-        else if (command == "-graphics") {
+        //             bool virus = (token[0] != 'D');
+        //             int strength = token[1] - '0'; // convert char to int using ascii
+        //             p3->setLink(i, strength, virus);
+
+        //             i++;
+        //         }
+
+        //         if (linkTokens.empty()){
+        //             p3->setRandomLinks();
+        //             cerr << "Error: No tokens found in file. Random values initialized." << endl;
+        //         }
+
+        //     } else {
+        //         cerr << "Error: Missing file name for link tokens" << endl;
+        //         return 1;
+        //     } 
+        // TODO: check implementation & ensure functional display
+        } else if (command == "-graphics") {
             game.graphics();
-        }
-        else if (command == "move") {
-            char link, dir;
-            std::cin >> link;
 
-            char linkAbilityId = game.getAbilityIdThatAffectMovement(turn, link);
+        // INTERACTIVE COMMANDS ---------------------------------------------------------
 
-            if(linkAbilityId=='L'){//linkboost
-                stc::cin >> dir;
-                game.Board() = new LinkBoostDecorator(game.Board(), link, dir, game.getLinkPositions());
+        // "move a <dir>" moves the link 'a' in the direction 'dir'
+            // a has to be a link the currrent player controls
+            // dir can be 'U', 'D', 'L', or 'R'
+        } else if (command == "move") {
+            char linkId, dir;
+            cin >> linkId;
+            cin >> dir;
+
+            char linkAbilityId = game.getAbilityIdThatAffectMovement(turn, linkId);
+
+            if (linkAbilityId=='L') { // linkboost
+                game.Board() = new LinkBoostDecorator(game.Board(), linkId, dir, game.getLinkPositions());
+            } else { // normal movement
+                game.Board() = new MoveDecorator(game.Board(), linkId, dir, game.getLinkPositions());
             }
-            else{ //normal movement
-                stc::cin >> dir;
-                game.Board() = new MoveDecorator(game.Board(), link, dir, game.getLinkPositions());
-            }
+
             turn++;
-        }
-        else if (command == "ability") {
+        
+        // "ability <N>" uses ability with ID 'N', with some abilities requiring additional info
+            // Linkboost: "ability <L> b" attaches linkboost to link 'b'
+            // Firewall: "ability <F> x y" creates a firewall at position (x, y)
+            // Download: "ability <D> b" immediately downloads the opponent's link 'b'
+            // Polarize: "ability <P> b" changes the targeted data to a virus or vice versa for link 'b'
+            // Scan: "ability <S> b" reveals the type and strength of any opponent link 'b'
+            // MadeInHeaven: "ability <M> b: attaches permanent ability protection on link 'b'
+            // KingCrimson: "ability <K> b x y" moves link 'b' to position (x, y)
+            // Jumper: "ability <J>" skips the opponent's next turn (player gets 2 turns)
+        } else if (command == "ability") {
             int order, x, y;
             char link;
-            std::cin >> order;
+            cin >> order;
             char ability_id = game.getPlayerAbilityId(turn, order);
 
             if(ability_id ==''){
-                cout << "you do not have that abilitiy please re-enter the command and an ability you have!"
+                cerr << "Error: invalid ability ID" << endl;
             }
-            else if (find(longTermLinkAbilitiesId.begin(), longTermLinkAbilitiesId.end(), ability_id) != longTermLinkAbilitiesId.end()){
+            else if (find(longTermLinkAbilitiesId.begin(), longTermLinkAbilitiesId.end(), ability_id) != longTermLinkAbilitiesId.end()) {
                 game.playerAbilityToPlayerLink(turn, link, ability_id);
             }
-            else if (find(attackAbilitiesId.begin(), attackAbilitiesId.end(), ability_id) != attackAbilitiesId.end()){
+            else if (find(attackAbilitiesId.begin(), attackAbilitiesId.end(), ability_id) != attackAbilitiesId.end()) {
                 game.playerAbilityToOpponentLink(turn, link, ability_id);
             }
-
-            else if(ability_id=='F'){
-                std::cin >> x >> y ;
+            else if (ability_id =='F') { // Firewall
+                cin >> x >> y ;
                 
-                game.Board() = new FirewallDecorator(game.Board(), turn, number_of_players, x, y, game.getLinkPositions());
+                game.Board() = new FirewallDecorator(game.Board(), turn, numPlayers, x, y, game.getLinkPositions());
             }
-            else if(ability_id=='J'){//Jumper
+            else if (ability_id == 'J') { // Jumper
                 turn++;
+                continue; // skips to next iteration immediately
             }
-            else if(ability_id=='K'){
-                std::cin >>link>> x >> y ;
+            else if(ability_id == 'K') { // KingCrimson
+                cin >>link>> x >> y ;
                 game.Board() = new KingCrimsonDecorator(game.Board(), link, x, y, game.getLinkPositions());
             }
-        }
-        else if (command == "abilities") {
+
+        // Display abilities possessed by the current player
+            // Display ability ID (1 - 8)
+            // Display if ability has been used
+        } else if (command == "abilities") {
             game.displayAbilities(turn);
-        }
-        else if (command == "board") {
+
+        // Display the current board to the graphics section
+        } else if (command == "board") {
             gameboard.render();
-        }
-        else if (command == "quit" || command == "q") {
-        
-        }
-        else{
-            cout << "the command and parameters could not be found, please re-enter the command and parameters!"
+
+        // Exit the game
+        } else if (command == "quit" || command == "q") {
+            cout << "Game exited successfully!" << endl;
+            return 0;
+        } else {
+            cerr << "Error: invalid command. Please try again. " << endl;
         }
 
-        if (game.findWinner()!=0) {
-            cout << "player" <<  game.findWinner() << " won!";
-        }        
+        // WIN/LOSS CONDITIONS ----------------------------------------------------------
+        if (game.findWinner() != 0) {
+            cout << "Congratulations! Player " <<  game.findWinner() << ", you've downloaded 4 data, you have won the game!" << endl;
+        } if (game.findLoser() != 0) {
+            cout << "Sorry! Player " << game.findLoser() << ", you've downloaded 4 viruses, you have lost the game!" << endl;
+        }
 
     }
-  delete game;
 }
