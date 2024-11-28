@@ -1,6 +1,7 @@
 #ifndef LINK_H
 #define LINK_H
 #include "ability_x.h"
+#include <vector>
 
 class Ability;
 
@@ -8,8 +9,9 @@ class Link{
     char name;
     bool visible;
     int strength;
-    bool virus;
-    Ability *a;
+    bool virus;//type
+    //only longterm abilities
+    vector<Ability*> abilities={nullptr};
 
 public:
     Link(char name, int strength, bool virus);
@@ -18,8 +20,10 @@ public:
     bool isVirus();//getter
     void enlighten();//setter
     int getStrength();//getter
-    Ability getAbility();
+    vector<Ability*> getAbilities();
     void setAbility(Ability *b);
+    void setStrength(int strenght);
+    void setType(bool virus);
 };
 
 #endif

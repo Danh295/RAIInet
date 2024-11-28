@@ -25,12 +25,25 @@ int Link::getStrength(){//getter
     return strength;
 }
     
-Ability* Link::getAbility(){
-    return a;
-}
-void Link::setAbility(Ability *b){
-    delete a;
-    a = std::move(b);
+vector<Ability*> Link::getAbilities(){
+    return abilities;
 }
 
+//only used for longTerm abilities
+void Link::setAbility(Ability *b){
+
+    for(auto a: abilities){
+        if(a->getId()==b->getId()){
+            return;
+        }
+    }
+    abilities.emplace_back(std::move(b));
+}
+
+void Link::setStrength(int strenght){
+    this->strength = strength;
+}
+void Link::setType(bool virus){
+    this->virus = virus;
+}
 
