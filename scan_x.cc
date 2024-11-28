@@ -3,5 +3,5 @@
 
 
 void Scan::effect(Link& link){
-    link.visible();
+    link.enlighten();
 }

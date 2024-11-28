@@ -8,7 +8,6 @@ class Scan : public Ability {
 public:
     Scan();
     int getId(){return id;}
-    
     void effect() override;
 };
 
