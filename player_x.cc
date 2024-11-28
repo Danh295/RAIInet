@@ -51,6 +51,10 @@ Player::Player(int id): id{id} {
         links[7] = new Link('Z', 0, false);
     }
 }
+
+int getId(){
+    return id;
+}
 Link* Player::getLink(char name){
     for(int i = 0; i < num_of_links; ++i){
         if(links[i]!=nullptr && links[i]->getName()==name){
@@ -67,12 +71,19 @@ void Player::setAbility(int idx, Ability *b){
     abilities[idx] = std::move(b);
 }
 
-void Player::setLink(char name, int strength, bool virus){
-    Link *l = getLink(name);
-    if(l!= nullptr){
-        delete l;
-        l = new Link(name, strength, virus);
+vector<Ability*> Player::getAbility(){
+    vector<Ability*> v = {nullptr};
+    for(int i = 0; i < num_of_abilities; ++i){
+        v.emplace_back(abilities[i]);
     }
+    return v;
+}
+
+
+void Player::setLink(int idx, int strength, bool virus){
+    links[idx]->setStrength(strength);
+    links[idx]->setType(virus);
+
 }
 bool Player::isReady(){
     for(int i = 0; i < num_of_links; ++i){
@@ -87,4 +98,15 @@ bool Player::isReady(){
     }
 
     return true;
+}
+
+bool Player::removeAbility(int ability_id){
+
+    for(int i = 0; i < num_of_abilities; ++i){
+        if(abilities[i]!=nullptr and abilities[i]->getId()==ability_id){
+            abilities[i] = nullptr;
+            return true;
+        }
+    }
+    return false;
 }
