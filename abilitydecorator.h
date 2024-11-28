@@ -17,7 +17,7 @@ class AbilityDecorator : public Decorator {
 public:
     AbilityDecorator(Board *base, int x, int y, Ability ability, unordered_map<char, pair<int, int>> linkPositions);
     char linkAt(int row, int col) override;
-    int abilityAt(int row, int col) override;
+    Ability* abilityAt(int row, int col) override;
     char displayAt(int row, int col) override;
     bool isSquareAbility(int ability_id);
 };

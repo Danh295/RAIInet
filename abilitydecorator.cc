@@ -13,11 +13,11 @@ char AbilityDecorator::linkAt(int row, int col){
     return base->linkAt(row, col);//this points to the previous version on the board
 }
 
-int AbilityDecorator::abilityAt(int row, int col){
+Ability* AbilityDecorator::abilityAt(int row, int col){
     
 
-    if(isSquareAbility(ability_id) and base->abilityAt(row, col)==0 and linkAt(row,col)=='.'){
-        return ability_id;
+    if(isSquareAbility(ability.getId()) and base->abilityAt(row, col)==0 and linkAt(row,col)=='.'){
+        return &ability;
     }
     return base->abilityAt(row, col);// this should return the most recent ability on this square should be 
 }
