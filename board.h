@@ -7,7 +7,8 @@ class Board {
         virtual ~Board();
 
         virtual char linkAt(int row, int col);
-        virtual int abilityAt(int row, int col);
+        virtual Ability* abilityAt(int row, int col);
+        virtual char displayAt(int row, int col);
 };
 
 #endif

@@ -51,6 +51,6 @@ char BoardSetup::displayAt(int row, int col) {
     return cur_board[row][col];
 }
 
-int BoardSetup::abilityAt(int row, int col) {
-    return 0; //represent blank ability
+Ability* BoardSetup::abilityAt(int row, int col) {
+    return nullptr; //represent no ability
 }
