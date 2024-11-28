@@ -38,7 +38,7 @@ MovingBoard::MovingBoard(Board *base, Link link, char direction, std::unordered_
             
             linkPositions[link.name]={dx, dy};
 
-            if(abilityAt(dx,dy) !=0){
+            if(abilityAt(dx,dy)){
                 //the ability will be processed in the game class
                 ability_triggered = true;
                 abilityAt(dx,dy);//update the ability on the square to nothing
@@ -55,14 +55,17 @@ char MovingBoard::linkAt(int row, int col){
     }
     return base->charAt(row, col);//this points to the previous version on the board
 }
-int MovingBoard::abilityAt(int row, int col){
+Ability* MovingBoard::abilityAt(int row, int col){
     if(ability_triggered){
-        return 0;
+        return nullptr;
     }
     return base->abilityAt(row, col);// this should return the most recent ability on this square 
 }
 
 char MovingBoard::displayAt(int row, int col){
     //if we made a move, we will always display the link
+    if(linkAt(row, col)=="." and abilityAt(row,col) !=nullptr){
+        return abilityAt(row,col)->display();
+    }
     return linkAt(row, col);
 }
