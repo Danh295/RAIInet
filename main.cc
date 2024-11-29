@@ -9,6 +9,7 @@
 #include "player_x.h"
 #include "board.h"
 #include "text.h"
+#include "graphics.h"
 #include "boardsetup.h"
 #include "linkboostdecorator.h"
 #include "movedecorator.h"
@@ -175,7 +176,8 @@ int main () {
         
         // TODO: check implementation & ensure functional display
         } else if (command == "-graphics") {
-            // game.graphics();
+            Graphics *graphicsObs = new Graphics(&game);
+            observers.emplace_back(graphicsObs);
 
         // INTERACTIVE COMMANDS ---------------------------------------------------------
 
@@ -274,5 +276,9 @@ int main () {
         //     cout << "Sorry! Player " << game.findLoser() << ", you've downloaded 4 viruses, you have lost the game!" << endl;
         // }
 
+    }
+
+    for (auto *obs : observers) {
+        delete obs;
     }
 }
