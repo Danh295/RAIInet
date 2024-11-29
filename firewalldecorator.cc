@@ -30,9 +30,4 @@ std::unordered_map<char, std::pair<int, int>> FirewallDecorator::getLinkPosition
     return linkPositions;
 }
 
-void FirewallDecorator::removeLink(char link_name){
-    if (linkPositions.find(link_name) != linkPositions.end()) {
-        // Delete the key
-        linkPositions.erase(link_name);
-    }
-}
+

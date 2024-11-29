@@ -87,7 +87,6 @@ void Game::playerAbilityToOpponentLink(int turn,char link_name, char ability_id)
             else{
                 p->incrementDownloadedData();
             }
-            theboard->removeLink(link_name);
         }
         else if(ability_id=='S'){
             //enlighten link

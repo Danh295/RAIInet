@@ -40,7 +40,6 @@ class Game: public Subject {
         Board*& board() { return theboard; }
         bool isValidSetup();//add to setupPlayer
         void opponentAbilityOnSquare(int turn, int row, int col);
-        void removeLinkOnBoard(char link_name);
         void playerAbilityToOpponentLink(int turn,char link_name, char ability_id);
         void playerAbilityToPlayerLink(int turn, char link_name, char ability_id);
         

@@ -12,9 +12,13 @@ game{game}, id{id}{
 
 void Text::notify () {
     if(id==0){
-        cout<<"Player 1 POV" <<endl;
+        cout<<"=========="<<endl;
+        cout<<"Player 1 Turn" <<endl;
+        cout<<"=========="<<endl;
     }else{
+        cout<<"=========="<<endl;
         cout<<"Player 2 POV" <<endl;
+        cout<<"=========="<<endl;
     }
     cout << "Player " << id+1 << ':' << endl;
     cout << "Downloaded: ";
@@ -69,4 +73,3 @@ void Text::notify () {
     cout <<endl;
     cout<<endl;
 }
-

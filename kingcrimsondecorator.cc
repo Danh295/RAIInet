@@ -39,10 +39,3 @@ std::unordered_map<char, std::pair<int, int>> KingCrimsonDecorator::getLinkPosit
     return linkPositions;
 }
 
-
-void KingCrimsonDecorator::removeLink(char link_name){
-    if (linkPositions.find(link_name) != linkPositions.end()) {
-        // Delete the key
-        // linkPositions.erase(link_name);
-    }
-}

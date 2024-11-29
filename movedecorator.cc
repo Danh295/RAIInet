@@ -61,9 +61,3 @@ std::unordered_map<char, std::pair<int, int>> MoveDecorator::getLinkPositions() 
 
     return linkPositions;
 }
-
-void MoveDecorator::removeLink(char link_name) {
-    // Remove the link from both this decorator and the base board
-    // linkPositions.erase(link_name);
-    // base->removeLink(link_name);
-}

@@ -15,7 +15,7 @@ class FirewallDecorator : public Decorator {
         FirewallDecorator(Board *previous, int turn, int number_of_players, int x, int y, std::unordered_map<char, std::pair<int, int>> linkPositions);
         unordered_map<char, pair<int, int>> getLinkPositions();
         char displayAt(int row, int col) override;
-        void removeLink(char link_name);
+
 };
 
 #endif

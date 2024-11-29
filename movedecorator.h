@@ -15,7 +15,6 @@ class MoveDecorator : public Decorator {
         MoveDecorator(Board *base, char link_name, char direction, unordered_map<char, pair<int, int>> linkPositions);
         unordered_map<char, pair<int, int>> getLinkPositions();
         char displayAt(int row, int col) override;
-        void removeLink(char link_name);
 };
 
 #endif
