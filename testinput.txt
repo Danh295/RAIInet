@@ -10,5 +10,17 @@ link2.txt
 board
 move a d  
 ability 1 b 
-board      
+board 
+move A u 
+board
+move a d  
+board
+move A u
+board
+move a d 
+board
+move a d  
+board
+move A u
+board
 quit
