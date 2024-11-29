@@ -278,7 +278,7 @@ int main () {
 
     }
 
-    for (auto *obs : observers) {
+    for (auto *obs : observer) {
         delete obs;
     }
 }
