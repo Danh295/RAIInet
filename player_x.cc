@@ -1,8 +1,7 @@
 #include "player_x.h"
 #include "link_x.h"
 #include <ctime>
-
-
+#include <iostream>
 using namespace std;
 
 Player::Player(int id): id{id} {
@@ -63,6 +62,7 @@ Link* Player::getLink(char name){
         if(links[i]!=nullptr && links[i]->getId()==name){
             return links[i];
         }
+        
     }
     return nullptr;
 }

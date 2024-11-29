@@ -19,10 +19,11 @@ bool Game::isValidSetup(){
 void Game::playerAbilityToPlayerLink(int turn, char link_name, char ability_id){
     Player *p = players[turn%number_of_players];
     Link *l = p->getLink(link_name);
-
+    // cout << l->getId()<< "link abilities" << endl;
     if(p->removeAbility(ability_id)){
         l->setAbility(ability_id);
     }
+    
 }
 
 int Game::findWinner(){
@@ -274,10 +275,8 @@ void Game::printOpponentLinks(int id){
 }
 
 char Game::getAbilityIdThatAffectMovement(int id, char linkName){
-    Player* p = players[id];
-
-    Link* l = p->getLink(linkName);
-
+    
+    Link* l = players[id]->getLink(linkName);
     for(auto a: l->getAbilities()){
         if(a == 'L'){
             return 'L';
@@ -287,6 +286,7 @@ char Game::getAbilityIdThatAffectMovement(int id, char linkName){
 }
 
 char Game::getPlayerAbilityById(int id, int idx){
+    
     Player* p = players[id];
     char ability_id = p->getAbilities()[idx-1];
     p->removeAbility(ability_id);

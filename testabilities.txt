@@ -7,21 +7,31 @@ LFDSP
 link1.txt
 -link2
 link2.txt
--graphics
 board
 move a d  
 ability 1 b 
 board 
 move A u 
-board
-move a d  
-board
-move A u
-board
-move a d  
-board
-move A u
+ability 1 B 
 board
 move a d 
+ability 4 A 
+board
+move A u
+ability 4 a 
+board
+move a d  
+ability 3 B
+board
+move A u
+ability 3 b
+board
+move b d
+board 
+move A u
+ability 5 b
+board
+move a d
+ability 2 0 0 
 board
 quit

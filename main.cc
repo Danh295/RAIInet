@@ -47,23 +47,22 @@ int main () {
 
     Player* p1= game.getPlayer(0);
     Player* p2= game.getPlayer(1);
-    // Player* p3= game->getPlayer(3);
-    // Player* p4= game->getPlayer(4);
     
     // Ability IDs init
-    const vector<int> longTermLinkAbilitiesId = {'L','M'}; // abilities with lasting status effect on the link (sticks to it)
-    const vector<int> attackAbilitiesId = {'D','S','P'}; // abilities used for attacking
+    const vector<char> longTermLinkAbilitiesId = {'L','M'}; // abilities with lasting status effect on the link (sticks to it)
+    const vector<char> attackAbilitiesId = {'D','S','P'}; // abilities used for attacking
 
 
     std::vector<Observer*> observers;
-
     
 
     // GAME LOOP ------------------------------------------------------------------------
     int turn = 0;
 
-    Text *a = new Text(&game, turn%numPlayers);
-    observers.emplace_back(a);
+    Text *a1 = new Text(&game, 0);
+    observers.emplace_back(a1);
+    // Text *a2 = new Text(&game, 1);
+    // observers.emplace_back(a2);
     string command;
     while (cin >> command){ // Player input command
         cerr << "Current turn: " << turn << command<< endl;
@@ -191,6 +190,7 @@ int main () {
 
             char linkAbilityId = game.getAbilityIdThatAffectMovement(turn%numPlayers, link);
             
+            cout <<link <<"link, ability "<< linkAbilityId<<" yo"<<endl;
             if(linkAbilityId=='L'){//linkboost
                 std::cin >> dir;
                 if(game.checkClashOnSquare(turn%numPlayers, link, dir, 2)){
@@ -223,17 +223,19 @@ int main () {
             char link;
             cin >> order;
             
-            char ability_id = game.getPlayerAbilityById(turn, order);
+            char ability_id = game.getPlayerAbilityById(turn%numPlayers, order);
             cout<<ability_id<<" ability_id"<<endl;
             if(ability_id =='.'){
                 cerr << "Error: invalid ability ID" << endl;
             }
             else if (find(longTermLinkAbilitiesId.begin(), longTermLinkAbilitiesId.end(), ability_id) != longTermLinkAbilitiesId.end()) {
                 cin>>link;
+                cout << "longterm";
                 game.playerAbilityToPlayerLink(turn, link, ability_id);
             }
             else if (find(attackAbilitiesId.begin(), attackAbilitiesId.end(), ability_id) != attackAbilitiesId.end()) {
                 cin >> link;
+                cout << "shortterm";
                 game.playerAbilityToOpponentLink(turn, link, ability_id);
             }
             else if (ability_id =='F') { // Firewall
