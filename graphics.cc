@@ -42,7 +42,7 @@ void Graphics::notify() {
                 cout << "Current iteration: " << i << ", " << j << endl;
                 return;
             }
-            char c = subject->getState(i, j);
+            char c = subject->getState(j, i);
             displayWin.fillRectangle(boarderSize + j * cellSize, 
                                      boarderSize + i * cellSize, 
                                      cellSize, cellSize, getColour(c));

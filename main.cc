@@ -180,6 +180,7 @@ int main () {
             continue;
         }else if (command == "graphics"){
             observers.emplace_back(new Graphics{&s});
+            continue;
         }else if (command == "quit"){
             return 2;
         }else {
