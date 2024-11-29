@@ -1,9 +1,9 @@
-#include "movedecorator.h"
+#include "linkboostdecorator.h"
 #include "board.h"
 #include <iostream>
 using namespace std;
 
-MoveDecorator::MoveDecorator(Board *base, char link_name, char direction, std::unordered_map<char, std::pair<int, int>> linkPositions)
+LinkBoostDecorator::LinkBoostDecorator(Board *base, char link_name, char direction, unordered_map<char, pair<int, int>> linkPositions)
         : Decorator{base}, link_name{link_name}, direction{direction} {
 
             linkPositions = base->getLinkPositions();
@@ -11,11 +11,11 @@ MoveDecorator::MoveDecorator(Board *base, char link_name, char direction, std::u
             int dy =linkPositions[link_name].second;
             from_x = dx;
             from_y = dy;
-            int move = 1;
+            int move = 2;
 
             switch (direction) {
-                case 'u': dx= dx+move; break;
-                case 'd': dx= dx-move; break;
+                case 'u': dx= dx +move; break;
+                case 'd': dx= dy-move; break;
                 case 'l': dy= dy-move; break;
                 case 'r': dy=dy+move; break;
             }
@@ -24,21 +24,21 @@ MoveDecorator::MoveDecorator(Board *base, char link_name, char direction, std::u
 
         }
 
-char MoveDecorator::displayAt(int row, int col){
-
-    if((row == from_y && col == from_x) || (linkPositions.find(link_name) == linkPositions.end())){
-        return '.'; //we just left the square or the link was downloaded
-    }
+char LinkBoostDecorator::displayAt(int row, int col){
     if (row ==  linkPositions[link_name].first && col == linkPositions[link_name].second) {
         return link_name;
     }
+    if(row == from_y && col == from_x){
+        return '.';
+    }
     return base->displayAt(row, col);//this points to the previous version on the board
 }
-std::unordered_map<char, std::pair<int, int>> MoveDecorator::getLinkPositions(){
+
+std::unordered_map<char, std::pair<int, int>> LinkBoostDecorator::getLinkPositions(){
     return linkPositions;
 }
 
-void MoveDecorator::removeLink(char link_name){
+void LinkBoostDecorator::removeLink(char link_name){
     if (linkPositions.find(link_name) != linkPositions.end()) {
         // Delete the key
         linkPositions.erase(link_name);
