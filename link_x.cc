@@ -1,6 +1,6 @@
 #include "link_x.h"
 #include <string>
-
+#include <iostream>
 using namespace std;
 
 Link::Link(char name, int strength, bool virus): name{name}, strength{strength}, virus{virus} {
@@ -20,15 +20,15 @@ void Link::enlighten(){//setter
     visible = true;
 }
 bool Link::isVirus(){//getter
-    return virus;
+    return this->virus;
 }
     
 int Link::getStrength(){//getter
-    return strength;
+    return this->strength;
 }
     
 string Link::getAbilities(){
-    return abilities;
+    return this->abilities;
 }
 
 //only used for longTerm abilities

@@ -17,9 +17,9 @@ bool Game::isValidSetup(){
 }
 
 void Game::playerAbilityToPlayerLink(int turn, char link_name, char ability_id){
+    
     Player *p = players[turn%number_of_players];
     Link *l = p->getLink(link_name);
-    // cout << l->getId()<< "link abilities" << endl;
     if(p->removeAbility(ability_id)){
         l->setAbility(ability_id);
     }
@@ -78,19 +78,23 @@ void Game::playerAbilityToOpponentLink(int turn,char link_name, char ability_id)
 
     if(apply_ability){
         if(ability_id=='D'){
+            l->enlighten();
+            this->downloadedLinks= this->downloadedLinks+ l->getId();
+
             if(l->isVirus()){ //if the link is a virus
                 p->incrementDownloadedVirus();
             }
             else{
                 p->incrementDownloadedData();
             }
+            theboard->removeLink(link_name);
         }
         else if(ability_id=='S'){
-            //shambles link
+            //enlighten link
             l->enlighten();
         }
         else if(ability_id=='P' ){
-            //enlighten link
+            //shamble link
             l->shambles();
         }
     }
@@ -124,36 +128,48 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
         case 'r': col=col+move; break;
     }
     
-    if(id == 0 && row < 0){//first player
-        cout << "row " << row<<endl;
-        if(nextLink->isVirus()){
-            p->incrementDownloadedVirus();                
-        }
-        else{
-            p->incrementDownloadedData();           
-        }
-        nextLink->gotDownloaded();
+    if(id == 0){
+        if(row < 0){//first player
+            if(nextLink->isVirus()){
+                p->incrementDownloadedVirus();                
+            }
+            else{
+                p->incrementDownloadedData();           
+            }
+            this->downloadedLinks = this->downloadedLinks + nextLink->getId();
         return false;
+        }
+        else if(row == 0 and (col==3 or col==4)){
+            return false; //your server
+        }
+        else if(row == 7 and (col==3 or col==4)){
+            this->downloadedLinks = this->downloadedLinks + nextLink->getId();
+            if(nextLink->isVirus()){
+                p->incrementDownloadedVirus();
+            }
+            else{
+                p->incrementDownloadedData();
+            }
+            return false; //your server
+        }
     }
+    
     else if(id == 1 && row >= 8){//should not be hardcoded here
-        cout << "row " << row<<endl;
         if(nextLink->isVirus()){
             p->incrementDownloadedVirus();                
         }
         else{
             p->incrementDownloadedData();           
         }
-        nextLink->gotDownloaded();
+        this->downloadedLinks = this->downloadedLinks + nextLink->getId();
         return false;
     }
     else if(row<0 || row >=8 || col < 0 || col >=8){
-        cout << "row " << row<<endl;
         return false;
     }
 
 
     char curLinkName = getState(row, col);
-    cout << "next step " << curLinkName<<endl;
 
     if(curLinkName== '.'){
         return true;
@@ -168,7 +184,7 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
             nextLink->enlighten();
             if(nextLink->isVirus()){
                 p->incrementDownloadedVirus();
-                nextLink->gotDownloaded();
+                this->downloadedLinks = this->downloadedLinks + nextLink->getId();
             }
         }
         return true;
@@ -193,8 +209,7 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
                     o->incrementDownloadedData();
                 }
 
-                theboard->removeLink(linkName);
-                nextLink->gotDownloaded();
+                // this->downloadedLinks = this->downloadedLinks + nextLink->getId();
                 return false;
             }
             else{
@@ -204,8 +219,9 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
                 else{
                     p->incrementDownloadedData();
                 }
-                theboard->removeLink(l->getId());
-                l->gotDownloaded();
+                
+                // this->downloadedLinks = this->downloadedLinks + l->getId();
+                
                 return true;
             }
         }
@@ -214,7 +230,7 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
 }
 
 void Game::printDownloaded(int id){
-    cout << players[id]->getDownloadedVirus()<<"D, " << players[id]->getDownloadedData() << "V";
+    cout << players[id]->getDownloadedData()<<"D, " << players[id]->getDownloadedVirus() << "V";
 }
 void Game::printPlayerAbilityCount(int id){
     int result = 0;
@@ -289,7 +305,7 @@ char Game::getPlayerAbilityById(int id, int idx){
     
     Player* p = players[id];
     char ability_id = p->getAbilities()[idx-1];
-    p->removeAbility(ability_id);
+    // p->removeAbility(ability_id);
     return ability_id;
 }
 
@@ -301,3 +317,11 @@ Player* Game::getPlayer(int id){
     return players[id];
 }
 
+
+string Game::getDownloadedLinks(){
+    return this->downloadedLinks;
+}
+
+void Game::setDownloadedLinks(){
+    this->downloadedLinks="";
+}

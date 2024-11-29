@@ -45,6 +45,9 @@ BoardSetup::BoardSetup(int number_of_players)
 }
 
 char BoardSetup::displayAt(int row, int col) {
+    if(row==-1 and col == -1){
+        return '.';
+    }
     return cur_board[row][col];
 }
 
@@ -56,6 +59,6 @@ std::unordered_map<char, std::pair<int, int>> BoardSetup::getLinkPositions(){
 void BoardSetup::removeLink(char link_name){
     if (linkPositions.find(link_name) != linkPositions.end()) {
         // Delete the key
-        linkPositions.erase(link_name);
+        // linkPositions.erase(link_name);
     }
 }

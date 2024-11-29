@@ -11,6 +11,11 @@ game{game}, id{id}{
 }
 
 void Text::notify () {
+    if(id==0){
+        cout<<"Player 1 POV" <<endl;
+    }else{
+        cout<<"Player 2 POV" <<endl;
+    }
     cout << "Player " << id+1 << ':' << endl;
     cout << "Downloaded: ";
     game->printDownloaded(id);
@@ -22,12 +27,34 @@ void Text::notify () {
         cout << '=';
     }
     cout << endl;
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            cout << game->getState(i, j);
-        }
+    if(id==0){
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+                if(game->getState(i, j)=='w'){
+                    cout<< '.';
+                }
+                else{
+                    cout << game->getState(i, j);
+                }
+            }
         cout << endl;
+        }
     }
+    else{
+        for (int i =7 ; i >= 0; --i) {
+            for (int j = 0; j < 8; ++j) {
+                if(game->getState(i, j)=='m'){
+                    cout<< '.';
+                }
+                else{
+                    cout << game->getState(i, j);
+                }
+                
+            }
+        cout << endl;
+        }
+    }
+    
     for (int j = 0; j < 8; ++j) {
         cout << '=';
     }
@@ -39,5 +66,7 @@ void Text::notify () {
     game->printPlayerAbilityCount(otherId);
     cout << endl;
     game->printOpponentLinks(otherId);
+    cout <<endl;
+    cout<<endl;
 }
 

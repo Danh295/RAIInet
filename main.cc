@@ -21,14 +21,15 @@ using namespace std;
 // TODO: 1. determine how to track which player's turn it is
 // TODO: 2. handle player commands specific to current player turn
 // TODO: 3. handle win/loss conditions
+// check linkboost
 
 int main () {
 
     // INITIALIZATION ----------------------------------------------------------------
 
     int numPlayers;
+    cout<<"Enter the number of players: ";
     cin >> numPlayers;
-
     cout<<numPlayers<<endl;
 
     // Board init
@@ -61,17 +62,18 @@ int main () {
 
     Text *a1 = new Text(&game, 0);
     observers.emplace_back(a1);
-    // Text *a2 = new Text(&game, 1);
-    // observers.emplace_back(a2);
+    Text *a2 = new Text(&game, 1);
+    observers.emplace_back(a2);
     string command;
     while (cin >> command){ // Player input command
-        cerr << "Current turn: " << turn << command<< endl;
+        // cerr << "Current turn: " << turn<< endl;
 
         // SETUP COMMANDS --------------------------------
 
         // Specifies abilities for player 1
             // Default: "LFDSP"
         if(command == "-ability1"){
+            cout<<"setting up abilities for player1"<<endl;
             std::string abilities;
             
             if(cin>> abilities){
@@ -83,6 +85,7 @@ int main () {
         // Specifies abilities for player 2
             // Default: "LFDSP"
         else if (command == "-ability2"){
+            cout<<"setting up abilities for player2"<<endl;
             
             std::string abilities;
             if(cin>> abilities){
@@ -94,6 +97,7 @@ int main () {
         
         // Specifies link tokens for player 1
         }else if (command == "-link1"){
+            cout<<"setting up abilities for link1"<<endl;
 
             // TODO: remove redundant code duplication by checking for "-link" and 
             // then updating it for the specified player accordingly afterwards
@@ -117,7 +121,7 @@ int main () {
                 while (i < 8 && file >> token) {
                     linkTokens.emplace_back(token);
 
-                    bool virus = (token[0] != 'D');
+                    bool virus = (token[0] == 'V');
                     int strength = token[1] - '0'; // convert char to int using ascii
                     p1->setLink(i, strength, virus);
                     i++;
@@ -134,7 +138,7 @@ int main () {
 
         // Specifies link tokens for player 2
         }else if(command == "-link2"){
-            cout<<"link2"<<endl;
+            cout<<"setting up abilities for link2"<<endl;
             
             // Get input file for link tokens
             string fileName;
@@ -155,7 +159,7 @@ int main () {
                 while (i < 8 && file >> token) {
                     linkTokens.emplace_back(token);
 
-                    bool virus = (token[0] != 'D');
+                    bool virus = (token[0] == 'V');
                     int strength = token[1] - '0'; // convert char to int using ascii
                     p2->setLink(i, strength, virus);
 
@@ -182,13 +186,13 @@ int main () {
             // a has to be a link the currrent player controls
             // dir can be 'U', 'D', 'L', or 'R'
         } else if (command == "move") {
+            cout <<"A move was made by player"<< turn%numPlayers<<endl;
             char link, dir;
             std::cin >> link;
             
 
             char linkAbilityId = game.getAbilityIdThatAffectMovement(turn%numPlayers, link);
             
-            cout <<link <<"link, ability "<< linkAbilityId<<" yo"<<endl;
             if(linkAbilityId=='L'){//linkboost
                 std::cin >> dir;
                 if(game.checkClashOnSquare(turn%numPlayers, link, dir, 2)){
@@ -198,9 +202,7 @@ int main () {
             else{ //normal movement
                 std::cin >> dir;
                 if(game.checkClashOnSquare(turn%numPlayers, link, dir, 1)){
-                    cout << "display "<<game.board()->displayAt(7,0)<< game.board()->displayAt(6,0)<< endl;
                     game.board() = new MoveDecorator(game.board(), link, dir, game.getLinkPositions());
-                    cout << "display "<<game.board()->displayAt(7,0)<< game.board()->displayAt(6,0)<< endl;
                 }
             }
             turn++;
@@ -216,25 +218,25 @@ int main () {
             // KingCrimson: "ability <K> b x y" moves link 'b' to position (x, y)
             // Jumper: "ability <J>" skips the opponent's next turn (player gets 2 turns)
         } else if (command == "ability") {
-            cout << "lol";
+            cout <<"A mysterious Ability suddenly activated!"<<endl;
             int order, x, y;
             char link;
             cin >> order;
             
             char ability_id = game.getPlayerAbilityById(turn%numPlayers, order);
-            cout<<ability_id<<" ability_id"<<endl;
             if(ability_id =='.'){
                 cerr << "Error: invalid ability ID" << endl;
             }
             else if (find(longTermLinkAbilitiesId.begin(), longTermLinkAbilitiesId.end(), ability_id) != longTermLinkAbilitiesId.end()) {
                 cin>>link;
-                cout << "longterm";
                 game.playerAbilityToPlayerLink(turn, link, ability_id);
             }
             else if (find(attackAbilitiesId.begin(), attackAbilitiesId.end(), ability_id) != attackAbilitiesId.end()) {
                 cin >> link;
-                cout << "shortterm";
                 game.playerAbilityToOpponentLink(turn, link, ability_id);
+                // if(ability_id=='D'){
+                //     game.board() = new KingCrimsonDecorator(game.board(), link, -1, -1, game.getLinkPositions()); //exit the board
+                // }
             }
             else if (ability_id =='F') { // Firewall
                 cin >> x >> y ;
@@ -272,6 +274,12 @@ int main () {
         if (game.findWinner() != 0) {
             cout << "Congratulations! Player " <<  game.findWinner() << ", you have won the game!" << endl;
         } 
+        if(game.getDownloadedLinks() != ""){
+            for(char s: game.getDownloadedLinks()){
+                game.board() = new KingCrimsonDecorator(game.board(), s, -1, -1, game.getLinkPositions()); // leave the board
+            }
+            game.setDownloadedLinks();
+        }
         // if (game.findLoser() != 0) {
         //     cout << "Sorry! Player " << game.findLoser() << ", you've downloaded 4 viruses, you have lost the game!" << endl;
         // }

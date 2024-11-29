@@ -1,0 +1,21 @@
+2          
+-ability1
+LFDSP
+-ability2
+LFDSP
+-link1
+link1.txt
+-link2
+link2.txt
+board
+ability 1 a 
+move a d  
+board 
+ability 1 A 
+move A u 
+board
+move a d 
+board
+move A u 
+board
+quit

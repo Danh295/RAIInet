@@ -26,6 +26,7 @@ class Game: public Subject {
     const vector<int> attackAbilitiesId = {'D','S','P'};
     const vector<int> squareAbilitiesId = {'F'};
     const vector<int> gameAbilitesId = {'V'};
+    string downloadedLinks="";
     public:
 
         explicit Game(Board *theboard, int number_of_players): theboard{theboard}, number_of_players{number_of_players} {}
@@ -57,6 +58,9 @@ class Game: public Subject {
         char getState(int row, int col) const override;
         char getAbilityIdThatAffectMovement(int id, char linkName);
         void printOpponentLinks(int id);
+        string getDownloadedLinks();
+
+        void setDownloadedLinks();
   
 };
 
