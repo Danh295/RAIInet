@@ -8,6 +8,6 @@ link1.txt
 -link2
 link2.txt
 move a u  
-ability L b 
+ability 1 b 
 board      
 quit

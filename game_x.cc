@@ -286,7 +286,6 @@ char Game::getPlayerAbilityById(int id, int idx){
     Player* p = players[id];
     char ability_id = p->getAbilities()[idx-1];
     p->removeAbility(ability_id);
-
     return ability_id;
 }
 

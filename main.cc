@@ -31,11 +31,12 @@ int main () {
     cout<<numPlayers<<endl;
 
     // Board init
-    unique_ptr<Board> board = make_unique<BoardSetup>(numPlayers);
+    Board* board = new BoardSetup(numPlayers);
+    // cout << board->displayAt(0,0)<< "yeah"<<endl;
     // Board* board = new BoardSetup{numPlayers}; 
 
     // Game init
-    Game game{board.get(),numPlayers }; // assumes Game ctor takes raw ptr
+    Game game{board ,numPlayers }; // assumes Game ctor takes raw ptr
     // Game game {board};
 
     // Player setup
@@ -188,6 +189,7 @@ int main () {
         } else if (command == "move") {
             char link, dir;
             std::cin >> link;
+            
 
             char linkAbilityId = game.getAbilityIdThatAffectMovement(turn%numPlayers, link);
 
@@ -200,10 +202,11 @@ int main () {
             else{ //normal movement
                 std::cin >> dir;
                 if(game.checkClashOnSquare(turn%numPlayers, link, dir, 1)){
+                    
                     game.board() = new MoveDecorator(game.board(), link, dir, game.getLinkPositions());
                 }
             }
-            Text *a = new Text(&game, turn%numPlayers +1);
+            Text *a = new Text(&game, turn%numPlayers);
             observers.emplace_back(a);
             turn++;
             
@@ -227,9 +230,11 @@ int main () {
                 cerr << "Error: invalid ability ID" << endl;
             }
             else if (find(longTermLinkAbilitiesId.begin(), longTermLinkAbilitiesId.end(), ability_id) != longTermLinkAbilitiesId.end()) {
+                cin>>link;
                 game.playerAbilityToPlayerLink(turn, link, ability_id);
             }
             else if (find(attackAbilitiesId.begin(), attackAbilitiesId.end(), ability_id) != attackAbilitiesId.end()) {
+                cin >> link;
                 game.playerAbilityToOpponentLink(turn, link, ability_id);
             }
             else if (ability_id =='F') { // Firewall

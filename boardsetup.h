@@ -9,7 +9,7 @@ using namespace std;
 class BoardSetup: public Board {
 
     unordered_map<char, pair<int, int>> linkPositions;
-    vector<string> cur_board;
+    std::vector<std::string> cur_board;
     public:
         BoardSetup(int number_of_players);
         char displayAt(int row, int col) override;

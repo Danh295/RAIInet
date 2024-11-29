@@ -5,7 +5,7 @@ using namespace std;
 
 MoveDecorator::MoveDecorator(Board *base, char link_name, char direction, std::unordered_map<char, std::pair<int, int>> linkPositions)
         : Decorator{base}, link_name{link_name}, direction{direction} {
-
+            cout << "in moving";
             linkPositions = base->getLinkPositions();
             int dx= linkPositions[link_name].first;
             int dy =linkPositions[link_name].second;
