@@ -172,10 +172,8 @@ int main () {
                 return 1;
             } 
 
-        
-        // TODO: check implementation & ensure functional display
         } else if (command == "-graphics") {
-            Graphics *graphicsObs = new Graphics(&game);
+            Graphics *graphicsObs = new Graphics(&game, turn);
             observers.emplace_back(graphicsObs);
 
         // INTERACTIVE COMMANDS ---------------------------------------------------------
@@ -280,7 +278,7 @@ int main () {
 
     }
 
-    for (auto *obs : observer) {
+    for (auto *obs : observers) {
         delete obs;
     }
 }

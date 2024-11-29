@@ -8,6 +8,7 @@
 // Graphics -- ConcreteObserver
 class Graphics: public Observer {
     Game *subject;
+    int turn;
     
     // window dimensions
     const int width = 700;
@@ -26,7 +27,7 @@ class Graphics: public Observer {
     const int pixels = 10;
 
   public:
-    Graphics(Game *subject); 
+    Graphics(Game *subject, int turn); 
     ~Graphics();
     void notify() override;
 

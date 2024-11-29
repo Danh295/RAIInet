@@ -73,11 +73,8 @@ void Xwindow::drawString(int x, int y, string msg) {
 }
 
 void Xwindow::drawLine(int x1, int y1, int x2, int y2, int colour) {
-    // set line color
     XSetForeground(d, gc, colours[colour]);
-    // draw the line
     XDrawLine(d, w, gc, x1, y1, x2, y2);
-    // reset to the default color (Black)
     XSetForeground(d, gc, colours[Black]);
 }
 

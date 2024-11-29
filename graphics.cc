@@ -3,23 +3,12 @@
 // Public Graphics ConcreteObserver Methods ------------------------------------
 
 // Graphics ctor (attaches observer)
-Graphics::Graphics(Game *subject):
-    subject{subject}, 
-    displayWin{width, height} {
-        subject->attach(this); // attach observer to studio subject
+Graphics::Graphics(Game *subject, int turn): 
+    subject{subject}, displayWin{width, height} {
 
+    subject->attach(this); // attach observer to studio subject
 
-}
-
-// Graphics dtor (detaches observer)
-Graphics::~Graphics() { subject->detach(this); }
-
-// Notify display observers
-void Graphics::notify() {
-    // Display board as a grid of squares/rectangles
-    
-
-    // Draw outer boarder lines
+    // outer boarder lines
     displayWin.fillRectangle(0, 0, boardWidth + 2 * boarderSize, 
                              boarderSize, Xwindow::Black);  // Top border
     displayWin.fillRectangle(0, boardHeight + boarderSize, boardWidth + 2 * boarderSize, 
@@ -29,19 +18,25 @@ void Graphics::notify() {
     displayWin.fillRectangle(boardWidth + boarderSize, 0, boarderSize, 
                              boardHeight + 2 * boarderSize, Xwindow::Black); // Right border
 
-    // Draw inner grid lines
+    // inner grid lines
     for (int i = 1; i < boardSize; ++i) {
-        // Horizontal lines
         displayWin.drawLine(boarderSize, boarderSize + i * cellSize, 
                             boarderSize + boardWidth, boarderSize + i * cellSize, Xwindow::Black);
-        // Vertical lines
         displayWin.drawLine(boarderSize + i * cellSize, boarderSize, 
                             boarderSize + i * cellSize, boarderSize + boardHeight, Xwindow::Black);
     }
+}
+
+// Graphics dtor (detaches observer)
+Graphics::~Graphics() { subject->detach(this); }
+
+// Notify display observers
+void Graphics::notify() {
+    // Display board as a grid of squares/rectangles
 
     // Inner board state
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 8; ++j) {
+    for (int i = 0; i < 8; ++i) { // iterate through rows
+        for (int j = 0; j < 8; ++j) { // iterate through columns
             if (!subject->getState(i, j)) {
                 cout << "Error: Subject->getState is null." << endl;
                 cout << "Current iteration: " << i << ", " << j << endl;
@@ -62,7 +57,6 @@ int Graphics::getColour(char c) {
     if (c == 'w' || c == 'm') return Xwindow::Black; // Firewall
     if (c >= 'a' && c <= 'h') return Xwindow::Red;   // Player 1 links
     if (c >= 'A' && c <= 'Z') return Xwindow::Blue;  // Player 2 links
-
     return 1;
 }
 
