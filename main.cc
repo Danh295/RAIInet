@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include <fstream>
-#include "game_trial.h"
+#include "game_x.h"
 #include "player_x.h"
 #include "board.h"
 #include "text.h"
