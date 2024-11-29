@@ -58,8 +58,13 @@ int main () {
 
     std::vector<Observer*> observers;
 
+    
+
     // GAME LOOP ------------------------------------------------------------------------
     int turn = 0;
+
+    Text *a = new Text(&game, turn%numPlayers);
+    observers.emplace_back(a);
     string command;
     while (cin >> command){ // Player input command
         cerr << "Current turn: " << turn << command<< endl;
@@ -122,10 +127,9 @@ int main () {
                     bool virus = (token[0] != 'D');
                     int strength = token[1] - '0'; // convert char to int using ascii
                     p1->setLink(i, strength, virus);
-
                     i++;
                 }
-
+                cout<< "strength" <<p1->getLink('a')->getStrength()<<endl;
                 if (linkTokens.empty()){
                     p1->setRandomLinks();
                     cerr << "Error: No tokens found in file. Random values initialized." << endl;
@@ -206,8 +210,6 @@ int main () {
                     game.board() = new MoveDecorator(game.board(), link, dir, game.getLinkPositions());
                 }
             }
-            Text *a = new Text(&game, turn%numPlayers);
-            observers.emplace_back(a);
             turn++;
             
         

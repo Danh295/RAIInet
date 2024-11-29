@@ -43,7 +43,7 @@ void Link::setAbility(char a){
     this->abilities= this->abilities + a;
 }
 
-void Link::setStrength(int strenght){
+void Link::setStrength(int strength){
     this->strength = strength;
 }
 void Link::setType(bool virus){

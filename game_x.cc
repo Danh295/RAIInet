@@ -209,7 +209,7 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
 }
 
 void Game::printDownloaded(int id){
-    cout << players[id]<<"D, " << players[id] << "V";
+    cout << players[id]->getDownloadedVirus()<<"D, " << players[id]->getDownloadedData() << "V";
 }
 void Game::printPlayerAbilityCount(int id){
     int result = 0;

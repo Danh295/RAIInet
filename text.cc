@@ -4,7 +4,7 @@
 using namespace std;
 
 Text::Text(Game *game, int id):
-game{game}{
+game{game}, id{id}{
     game->attach(this);
     if (id == 0) otherId = 1;
     else otherId = 0;
