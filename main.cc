@@ -31,11 +31,10 @@ int main () {
     cout<<numPlayers<<endl;
 
     // Board init
-    unique_ptr<Board> board = make_unique<BoardSetup>(numPlayers);
-    // Board* board = new BoardSetup{numPlayers}; 
+    Board* board = new BoardSetup(numPlayers); 
 
     // Game init
-    Game game{board.get(),numPlayers }; // assumes Game ctor takes raw ptr
+    Game game{board ,numPlayers }; // assumes Game ctor takes raw ptr
     // Game game {board};
 
     // Player setup
@@ -57,8 +56,13 @@ int main () {
 
     std::vector<Observer*> observers;
 
+    
+
     // GAME LOOP ------------------------------------------------------------------------
     int turn = 0;
+
+    Text *a = new Text(&game, turn%numPlayers);
+    observers.emplace_back(a);
     string command;
     while (cin >> command){ // Player input command
         cerr << "Current turn: " << turn << command<< endl;
@@ -68,33 +72,28 @@ int main () {
         // Specifies abilities for player 1
             // Default: "LFDSP"
         if(command == "-ability1"){
-            cout<<"ability1"<<endl;
             std::string abilities;
             
             if(cin>> abilities){
                 for(size_t i=0; i<abilities.size(); i++){
                     p1->setAbility(i, abilities[i]);
-                    cout << abilities[i] << endl;
                 }
             }//otherwise it is already internally setup
         }
         // Specifies abilities for player 2
             // Default: "LFDSP"
         else if (command == "-ability2"){
-            cout<<"ability1"<<endl;
             
             std::string abilities;
             if(cin>> abilities){
 
                 for(size_t i=0; i<abilities.size(); i++){
                     p2->setAbility(i, abilities[i]);
-                    cout << abilities[i]<<endl;
                 }    
             }
         
         // Specifies link tokens for player 1
         }else if (command == "-link1"){
-            cout<<"link1"<<endl;
 
             // TODO: remove redundant code duplication by checking for "-link" and 
             // then updating it for the specified player accordingly afterwards
@@ -121,10 +120,8 @@ int main () {
                     bool virus = (token[0] != 'D');
                     int strength = token[1] - '0'; // convert char to int using ascii
                     p1->setLink(i, strength, virus);
-
                     i++;
                 }
-
                 if (linkTokens.empty()){
                     p1->setRandomLinks();
                     cerr << "Error: No tokens found in file. Random values initialized." << endl;
@@ -188,9 +185,10 @@ int main () {
         } else if (command == "move") {
             char link, dir;
             std::cin >> link;
+            
 
             char linkAbilityId = game.getAbilityIdThatAffectMovement(turn%numPlayers, link);
-
+            
             if(linkAbilityId=='L'){//linkboost
                 std::cin >> dir;
                 if(game.checkClashOnSquare(turn%numPlayers, link, dir, 2)){
@@ -200,11 +198,11 @@ int main () {
             else{ //normal movement
                 std::cin >> dir;
                 if(game.checkClashOnSquare(turn%numPlayers, link, dir, 1)){
+                    cout << "display "<<game.board()->displayAt(7,0)<< game.board()->displayAt(6,0)<< endl;
                     game.board() = new MoveDecorator(game.board(), link, dir, game.getLinkPositions());
+                    cout << "display "<<game.board()->displayAt(7,0)<< game.board()->displayAt(6,0)<< endl;
                 }
             }
-            Text *a = new Text(&game, turn%numPlayers +1);
-            observers.emplace_back(a);
             turn++;
             
         
@@ -218,18 +216,22 @@ int main () {
             // KingCrimson: "ability <K> b x y" moves link 'b' to position (x, y)
             // Jumper: "ability <J>" skips the opponent's next turn (player gets 2 turns)
         } else if (command == "ability") {
+            cout << "lol";
             int order, x, y;
             char link;
             cin >> order;
+            
             char ability_id = game.getPlayerAbilityById(turn, order);
-
+            cout<<ability_id<<" ability_id"<<endl;
             if(ability_id =='.'){
                 cerr << "Error: invalid ability ID" << endl;
             }
             else if (find(longTermLinkAbilitiesId.begin(), longTermLinkAbilitiesId.end(), ability_id) != longTermLinkAbilitiesId.end()) {
+                cin>>link;
                 game.playerAbilityToPlayerLink(turn, link, ability_id);
             }
             else if (find(attackAbilitiesId.begin(), attackAbilitiesId.end(), ability_id) != attackAbilitiesId.end()) {
+                cin >> link;
                 game.playerAbilityToOpponentLink(turn, link, ability_id);
             }
             else if (ability_id =='F') { // Firewall

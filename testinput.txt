@@ -7,7 +7,20 @@ LFDSP
 link1.txt
 -link2
 link2.txt
-move a u  
-ability L b 
-board      
+board
+move a d  
+ability 1 b 
+board 
+move A u 
+board
+move a d  
+board
+move A u
+board
+move a d 
+board
+move a d  
+board
+move A u
+board
 quit

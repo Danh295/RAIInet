@@ -7,7 +7,7 @@ using namespace std;
 
 BoardSetup::BoardSetup(int number_of_players)
         {
-            vector<string> cur_board = {
+            cur_board = {
                     "abcSSfgh",
                     "...de...",
                     "........",

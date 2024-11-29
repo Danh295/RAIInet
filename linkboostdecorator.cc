@@ -6,22 +6,21 @@ using namespace std;
 LinkBoostDecorator::LinkBoostDecorator(Board *base, char link_name, char direction, unordered_map<char, pair<int, int>> linkPositions)
         : Decorator{base}, link_name{link_name}, direction{direction} {
 
-            linkPositions = base->getLinkPositions();
-            int dx= linkPositions[link_name].first;
-            int dy =linkPositions[link_name].second;
+            this->linkPositions = linkPositions;
+            int dx= this->linkPositions[link_name].first;
+            int dy =this->linkPositions[link_name].second;
             from_x = dx;
             from_y = dy;
             int move = 2;
 
             switch (direction) {
-                case 'u': dx= dx +move; break;
-                case 'd': dx= dy-move; break;
+                case 'u': dx= dx -move; break;
+                case 'd': dx= dx+move; break;
                 case 'l': dy= dy-move; break;
                 case 'r': dy=dy+move; break;
             }
             
-            linkPositions[link_name]={dx, dy};
-
+            this->linkPositions[link_name]={dx, dy};
         }
 
 char LinkBoostDecorator::displayAt(int row, int col){
@@ -35,7 +34,7 @@ char LinkBoostDecorator::displayAt(int row, int col){
 }
 
 std::unordered_map<char, std::pair<int, int>> LinkBoostDecorator::getLinkPositions(){
-    return linkPositions;
+    return this->linkPositions;
 }
 
 void LinkBoostDecorator::removeLink(char link_name){

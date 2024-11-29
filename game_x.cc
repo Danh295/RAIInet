@@ -117,13 +117,14 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
     int col = pos[linkName].second;
 
     switch (dir) {
-        case 'u': row= row+move; break;
-        case 'd': row= row-move; break;
+        case 'u': row= row-move; break;
+        case 'd': row= row+move; break;
         case 'l': col= col-move; break;
         case 'r': col=col+move; break;
     }
-
+    
     if(id == 0 && row < 0){//first player
+        cout << "row " << row<<endl;
         if(nextLink->isVirus()){
             p->incrementDownloadedVirus();                
         }
@@ -134,6 +135,7 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
         return false;
     }
     else if(id == 1 && row >= 8){//should not be hardcoded here
+        cout << "row " << row<<endl;
         if(nextLink->isVirus()){
             p->incrementDownloadedVirus();                
         }
@@ -144,11 +146,13 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
         return false;
     }
     else if(row<0 || row >=8 || col < 0 || col >=8){
+        cout << "row " << row<<endl;
         return false;
     }
 
 
     char curLinkName = getState(row, col);
+    cout << "next step " << curLinkName<<endl;
 
     if(curLinkName== '.'){
         return true;
@@ -209,7 +213,7 @@ bool Game::checkClashOnSquare(int turn, char linkName, char dir, int move){
 }
 
 void Game::printDownloaded(int id){
-    cout << players[id]<<"D, " << players[id] << "V";
+    cout << players[id]->getDownloadedVirus()<<"D, " << players[id]->getDownloadedData() << "V";
 }
 void Game::printPlayerAbilityCount(int id){
     int result = 0;
@@ -286,7 +290,6 @@ char Game::getPlayerAbilityById(int id, int idx){
     Player* p = players[id];
     char ability_id = p->getAbilities()[idx-1];
     p->removeAbility(ability_id);
-
     return ability_id;
 }
 
