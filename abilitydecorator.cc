@@ -32,13 +32,3 @@ char AbilityDecorator::displayAt(int row, int col){
     
     return linkAt(row,col);
 }
-
-bool isSquareAbility(int ability_id){
-    for(auto id: squareAbility){
-        if(ability_id == id){
-            return true;
-        }
-    }
-
-    return false;
-}

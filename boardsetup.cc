@@ -43,14 +43,6 @@ BoardSetup::BoardSetup(int number_of_players)
 
 }
 
-char BoardSetup::linkAt(int row, int col) {
-    return cur_board[row][col];
-}
-
 char BoardSetup::displayAt(int row, int col) {
     return cur_board[row][col];
-}
-
-Ability* BoardSetup::abilityAt(int row, int col) {
-    return nullptr; //represent no ability
 }

@@ -10,8 +10,8 @@ class Link{
     bool visible;
     int strength;
     bool virus;//type
-    //only longterm abilities
-    vector<Ability*> abilities={nullptr};
+    bool downloaded;
+    string abilities="";
 
 public:
     Link(char name, int strength, bool virus);
@@ -20,8 +20,11 @@ public:
     bool isVirus();//getter
     void enlighten();//setter
     int getStrength();//getter
-    vector<Ability*> getAbilities();
-    void setAbility(Ability *b);
+    bool isDownloaded();
+    bool isVisible();
+    void gotDownloaded();
+    string getAbilities();
+    void setAbility(char a);
     void setStrength(int strenght);
     void setType(bool virus);
 };

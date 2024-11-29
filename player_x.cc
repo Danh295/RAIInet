@@ -4,11 +4,12 @@
 
 
 Player::Player(int id): id{id} {
-    
-
-    for(int i = 0; i < num_of_abilities; ++i){
-        abilities[i] = nullptr;
-    }
+   
+    abilities[0] = 'L';
+    abilities[1] = 'F';
+    abilities[2] = 'D';
+    abilities[3] = 'S';
+    abilities[4] = 'P';
 
     if(id == 1){
         links[0] = new Link('a', 0, true);
@@ -63,22 +64,29 @@ Link* Player::getLink(char name){
     }
     return nullptr;
 }
-void Player::setAbility(int idx, Ability *b){
+void Player::setAbility(int idx, char b){
     if (idx < 0 || idx >= 5) {
         return;
     }
     
-    abilities[idx] = std::move(b);
+    abilities[idx] = b;
 }
 
-vector<Ability*> Player::getAbility(){
-    vector<Ability*> v = {nullptr};
+string Player::getAbility(){
+    string p_abilities = "";
     for(int i = 0; i < num_of_abilities; ++i){
+        p_abilities= p_abilities + abilities[i];
+    }
+    return p_abilities;
+}
+
+vector<Link*> Player::getAllLinks(){
+    vector<Link*> v = {nullptr};
+    for(int i = 0; i < num_of_links; ++i){
         v.emplace_back(abilities[i]);
     }
     return v;
 }
-
 
 void Player::setLink(int idx, int strength, bool virus){
     links[idx]->setStrength(strength);
@@ -100,13 +108,33 @@ bool Player::isReady(){
     return true;
 }
 
-bool Player::removeAbility(int ability_id){
+bool Player::removeAbility(char ability_id){
 
-    for(int i = 0; i < num_of_abilities; ++i){
-        if(abilities[i]!=nullptr and abilities[i]->getId()==ability_id){
-            abilities[i] = nullptr;
+    for(int i = 0; i < size(abilities); ++i){
+        if(abilities[i]==ability_id){
+            abilities[i] = ' ';
             return true;
         }
     }
     return false;
+}
+
+void Player::setRandomLinks(){
+    std::srand(std::time(nullptr));
+    int strength;
+    bool virus;
+
+    for(int i = 0; i < num_of_links; ++i){
+        strength = (std::rand() % 4) + 1;
+        virus = std::rand() % 2;
+        setLink(i, strength, virus);
+    }
+
+}
+
+int Player::getDownloadedData(){
+    return downloaded_data;
+}
+int Player::getDownloadedVirus(){
+    return downloaded_virus;    
 }

@@ -5,12 +5,16 @@
 Link::Link(char name, int strength, bool virus): name{name}, strength{strength}, virus{virus} {
     a = new Ability();
     visible = false;
+    downloaded = false;
 }
 
 Link::~Link(){
     delete a;
 }
 
+bool Link::isVisible(){
+    return visible;
+}
 void Link::shambles(){//setter
     virus = !virus;
 }
@@ -25,19 +29,19 @@ int Link::getStrength(){//getter
     return strength;
 }
     
-vector<Ability*> Link::getAbilities(){
+string Link::getAbilities(){
     return abilities;
 }
 
 //only used for longTerm abilities
-void Link::setAbility(Ability *b){
+void Link::setAbility(char a){
 
-    for(auto a: abilities){
-        if(a->getId()==b->getId()){
+    for(auto ab: abilities){
+        if(ab == a){
             return;
         }
     }
-    abilities.emplace_back(std::move(b));
+    abilities= abiilities + a;
 }
 
 void Link::setStrength(int strenght){
@@ -47,3 +51,10 @@ void Link::setType(bool virus){
     this->virus = virus;
 }
 
+
+bool isDownloaded(){
+    return downloaded;
+}
+void gotDownloaded(){
+    downloaded = true;
+}

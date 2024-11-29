@@ -6,16 +6,14 @@ using namespace std;
 
 class MoveDecorator : public Decorator {
 
-    Link link; 
+    char link_name; 
     char direction;
     unordered_map<char,pair<int, int>> linkPositions;
     int from_x, from_y;
-    bool ability_triggered = false;
     
     public:
-        MoveDecorator(Board *base, Link link, char direction, unordered_map<char, pair<int, int>> linkPositions);
-        char linkAt(int row, int col) override;
-        Ability* abilityAt(int row, int col) override;
+        MoveDecorator(Board *base, char link_name, char direction, unordered_map<char, pair<int, int>> linkPositions);
+        unordered_map<char, pair<int, int>> getLinkPositions();
         char displayAt(int row, int col) override;
 };
 
