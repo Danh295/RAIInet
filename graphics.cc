@@ -46,6 +46,8 @@ void Graphics::notify() {
             displayWin.fillRectangle(boarderSize + j * cellSize, 
                                      boarderSize + i * cellSize, 
                                      cellSize, cellSize, getColour(c));
+
+            // TODO: display D/V and strength on each cell, depending on visibility of the current Player (determined through current turn)
         }
     }
 }
