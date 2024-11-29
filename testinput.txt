@@ -7,6 +7,7 @@ LFDSP
 link1.txt
 -link2
 link2.txt
+-graphics
 board
 move a d  
 ability 1 b 

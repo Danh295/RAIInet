@@ -10,10 +10,18 @@ class Graphics: public Observer {
     Game *subject;
     
     // window dimensions
-    const int width = 77;
-    const int height = 77;
+    const int width = 700;
+    const int height = 700;
 
-    // window object & details
+    // window dimensions details
+    const int cellSize = 50;
+    const int boarderSize = 5;
+    const int boardSize = 8;
+
+    const int boardWidth = cellSize * boardSize;
+    const int boardHeight = cellSize * boardSize;
+
+    // window object details
     Xwindow displayWin;
     const int pixels = 10;
 

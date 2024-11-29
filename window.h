@@ -15,7 +15,7 @@ class Xwindow {
   Xwindow(int width=500, int height=500);  // Constructor; displays the window.
   ~Xwindow();                              // Destructor; destroys the window.
 
-  enum {White=0, Black, Red, Green, Blue, Grey}; // Available colours.
+  enum {White=0, Black, Red, Green, Blue}; // Available colours.
 
   int getWidth() const;
   int getHeight() const;
@@ -25,6 +25,9 @@ class Xwindow {
 
   // Draws a string
   void drawString(int x, int y, std::string msg);
+
+  // Draw a line
+  void drawLine(int x1, int y1, int x2, int y2, int colour=Black);
 
 };
 
